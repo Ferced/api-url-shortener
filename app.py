@@ -8,9 +8,10 @@ from models.product_schema import ProductSchema
 import os
 import random
 app= Flask(__name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///' + os.path.join(basedir,'models/db.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+# basedir = os.path.abspath(os.path.dirname(__file__))
+# app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///' + os.path.join(basedir,'models/db.sqlite')
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+app.config.from_pyfile('config_file.cfg')
 db.init_app(app)
 ma.init_app(app)
 
