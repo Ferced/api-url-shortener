@@ -1,19 +1,10 @@
 from flask import Flask, request, jsonify
-from flask_restplus import Api, Resource
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 from endpoints.apis import blueprint as api
 from models.product import db
-from models.product import Product
 from models.product_schema import ma
-from models.product_schema import ProductSchema
 import os
 
-#CLAVE
-#from flask import current_app as app
-
 app= Flask(__name__)
-
 # Init DataBase
 db.init_app(app)
 # Init Marshmallow
