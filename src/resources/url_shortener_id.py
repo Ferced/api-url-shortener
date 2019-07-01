@@ -1,20 +1,24 @@
-from flask import Flask, request, jsonify, Blueprint
-from models.product import db, Product
-from models.product_schema import ma, ProductSchema
+from flask import Flask, request, jsonify
+from flask_restplus import Api, Resource
+from server.instance import server
+from models.url_shortener import db, Product
+from models.url_shortener_schema import ma, ProductSchema
 
-url_shortener_id= Blueprint('url_shortener_id', __name__)
+
+app, api = server.app, server.api
+
 # Init Product Schema
 product_schema = ProductSchema(strict = True)
 # Init Products Schema
 products_schema = ProductSchema(many=True,strict = True)
 
-@url_shortener_id.route('/url_shortener/<id>',methods=["GET","POST","DELETE"])
-def url_shortener_single(id):
-    if request.method == "GET":
+@api.route('/url_shortener/<id>')
+class UrlShortenerID(Resource):
+    def get(self,id):
         #DEVUELVE EL PRODUCTO SEGUN EL ID
         product = Product.query.get(id)
         return product_schema.jsonify(product)
-    if request.method == "POST":
+    def post(self,id):
         #ACTUALIZA EL PRODUCTO SEGUN EL ID
         product = Product.query.get(id)
         url_original=request.json['url_original']
@@ -23,7 +27,7 @@ def url_shortener_single(id):
         product.url_corta = url_corta
         db.session.commit()
         return product_schema.jsonify(product)
-    if request.method == "DELETE":
+    def delete(self,id):
         #ELIMINA EL PRODUCTO SEGUN EL ID
         product = Product.query.get(id)
         db.session.delete(product)

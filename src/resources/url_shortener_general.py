@@ -1,22 +1,28 @@
-from flask import Flask, request, jsonify, Blueprint
-from models.product import db, Product
-from models.product_schema import ma, ProductSchema
-from url_generator.generadorUrl import GeneradorUrl
+from flask import Flask, request, jsonify
+from flask_restplus import Api, Resource
+from models.url_shortener import db, Product
+from models.url_shortener_schema import ma, ProductSchema
+from models.database import db
+from server.instance import server
+from helpers.generadorUrl import GeneradorUrl
 
-url_shortener= Blueprint('url_shortener', __name__)
+
+app, api= server.app, server.api
 # Init Product Schema
 product_schema = ProductSchema(strict = True)
 # Init Products Schema
 products_schema = ProductSchema(many=True,strict = True)
 
-@url_shortener.route('/url_shortener',methods=["GET","POST"])
-def url_shortener_general():
-    if request.method == "GET":
+
+
+@api.route('/url_shortener')
+class UrlShortnerGeneral(Resource):
+    def get(self):
         #DEVUELVE TODOS LOS PRODUCTOS
         all_products = Product.query.all()
         result = products_schema.dump(all_products)
         return jsonify(result.data)
-    if request.method == "POST":
+    def post(self):
         #AGREGA UN PRODUCTO NUEVO
         url_original=request.json['url_original']
         url_basededatos=Product.query.filter_by(url_original=url_original).first()
