@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_restplus import Api, Resource
 from server.instance import server
-from models.url_shortener import db, Product
-from models.url_shortener_schema import ma, ProductSchema
+from models.url_shortener import Product
+from models.url_shortener_schema import ProductSchema
+from db.database import db,ma
 
 
 app, api = server.app, server.api

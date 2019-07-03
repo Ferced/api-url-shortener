@@ -11,9 +11,9 @@ class Server(object):
         # Path de directorio
         self.basedir = os.path.abspath(os.path.dirname(__file__)+r"\..")
         # Configuracion APP
-        self.app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///' + os.path.join(self.basedir,r'models\db.sqlite')
+        self.app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///' + os.path.join(self.basedir,r'db/db.sqlite')
         print ("BASE DE DATOS: ")
-        print ('sqlite:///' + os.path.join(self.basedir,'models/db.sqlite'))
+        print ('sqlite:///' + os.path.join(self.basedir,'db/db.sqlite'))
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
         self.api = Api(self.app, 
             version='1.0', 
